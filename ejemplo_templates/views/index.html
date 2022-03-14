@@ -1,35 +1,24 @@
+{% extends 'layout.html' %}
 {% from 'pokemon_macro.html' import pokemon_card  %}
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+{% block title %}Home{% endblock %}
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+{% block container %}
+  <h1 class="text-center">Lista de Pokemones</h1>
+  <div class="row">
+    {% for pokemon in pokemones %}
+      {{ pokemon_card(pokemon) }}
+    {% endfor %}
+  </div>
+  <ul>
+    {% for pokemon in pokemones %}
+      <li><a href="{{ pokemon.url }}">{{ pokemon.name }} {{pokemon.id}}</a></li>
+    {% endfor %}
+  </ul>
+{% endblock %}
 
-    <title>Hello, world!</title>
-  </head>
-  <body>
-    <h1 class="text-center">Lista de Pokemones</h1>
-    <div class="container">
-      <div class="row">
-        {% for pokemon in pokemones %}
-          {{ pokemon_card(pokemon) }}
-        {% endfor %}
-      </div>
-      <ul>
-        {% for pokemon in pokemones %}
-          <li><a href="{{ pokemon.url }}">{{ pokemon.name }} {{pokemon.id}}</a></li>
-        {% endfor %}
-      </ul>
-    </div>
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="js/bootstrap.min.js"></script>
-  </body>
-</html>
+{% block scripts %}
+<script>
+  console.log('Llegó desde el Wikidex')
+</script>
+{% endblock %}

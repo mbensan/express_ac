@@ -4,7 +4,7 @@
       <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{{ pokemon.id }}.png" class="card-img-top" alt="...">
       <div class="card-body">
         <h5 class="card-title">{{ pokemon.name }}</h5>
-        <a href="{{ pokemon.url }}" class="btn btn-primary">Ver detalle</a>
+        <a href="/pokemon?api_url={{ pokemon.url }}" class="btn btn-primary">Ver detalle</a>
       </div>
     </div>
   </div>

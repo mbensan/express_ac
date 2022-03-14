@@ -11,7 +11,8 @@ app.use(express.static('node_modules/bootstrap/dist'))
 // configuramos el motor de templates (nunjucks)
 nunjucks.configure('views', {
   express: app,
-  autoescape: true
+  autoescape: true,
+  watch: true
 })
 
 
@@ -21,8 +22,20 @@ app.get('/', async (req, res) => {
   for (pokemon of data.results) {
     pokemon.id = pokemon.url.split('/')[6]
   }
+
   // renderizamos el template
   res.render('index.html', {pokemones: data.results})
 })
+
+app.get('/pokemon', async (req, res) => {
+  const { data } = await axios.get(req.query.api_url)
+  
+  console.log(data);
+  res.render('pokemon_detail.html', {pokemon: data})
+})
+
+app.get('/wikidex', (req, res) => {
+  res.render('wikidex.html')
+});
 
 app.listen(3000, () => console.log('Servidor en puerto 3000'))
