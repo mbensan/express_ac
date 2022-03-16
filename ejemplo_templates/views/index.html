@@ -19,6 +19,15 @@
 
 {% block scripts %}
 <script>
-  console.log('Llegó desde el Wikidex')
+  const lista_pokemones = []
+
+  $('.add-pokemon').on('click', function() {
+    const id = $(this).attr('data-id')
+    const name = $(this).attr('data-name')
+    const url = $(this).attr('data-url')
+
+    lista_pokemones.push({ id, name, url })
+
+  })
 </script>
 {% endblock %}

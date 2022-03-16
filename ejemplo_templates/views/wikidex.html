@@ -4,9 +4,49 @@
 
 {% block container %}
   <h1 class="text-center">Wikidex</h1>
-  <p class="mt-5 pt-5">
-    Por completar
-  </p>
+  <div class="row">
+    <!-- Formulario de WikiDex -->
+    <form class="col-4 offset-1 bg-secondary bg-opacity-25 p-4 br-4 rounded" id="poke-form">
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Nombre Pokemon</label>
+        <input type="text" required class="form-control" id="poke-name">
+      </div>
+      <button type="submit" class="btn btn-primary">Buscar</button>
+    </form>
+    <!-- Formulario para cambiar mi avatar-->
+    <form
+      class="col-4 offset-2 bg-success bg-opacity-25 p-4 br-4 rounded"
+      action="set-avatar" method="post"
+      enctype="multipart/form-data"
+    >
+      <h3 class="text-center">Ingrese su nuevo avatar</h3>
+      <div class="mb-3">
+        <label class="form-label">Mensaje</label>
+        <input type="text" required class="form-control" name="mensaje">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Imagen</label>
+        <input type="file" required class="form-control" name="avatar">
+      </div>
+      <button type="submit" class="btn btn-primary">Enviar</button>
+    </form>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  $('#poke-form').on('submit', function(ev) {
+    // 1. Evitamos que se envíe el formulario
+    ev.preventDefault()
+
+    // 2. capturo el nombre del pokemon
+    const name = $('#poke-name').val()
+
+    // 3. Abrimos una pestaña nueva
+    const url = `https://www.wikidex.net/wiki/${name}`
+    window.open(url, '_blank').focus();
+  })
+</script>
 {% endblock %}
 
 

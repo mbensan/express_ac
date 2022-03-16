@@ -5,6 +5,18 @@
       <div class="card-body">
         <h5 class="card-title">{{ pokemon.name }}</h5>
         <a href="/pokemon?api_url={{ pokemon.url }}" class="btn btn-primary">Ver detalle</a>
+        <!--
+          <button
+            data-pokeinfo="{{pokemon.id}}#{{pokemon.name}}#{{pokemon.url}}"
+            class="btn btn-warning add-pokemon">
+            Añadir a lista
+          </button>
+        -->
+        <button
+          data-id="{{pokemon.id}}" data-name="{{pokemon.name}}" data-url="{{pokemon.url}}"
+          class="btn btn-warning add-pokemon">
+          Añadir a lista
+        </button>
       </div>
     </div>
   </div>
