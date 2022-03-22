@@ -1,0 +1,67 @@
+{% extends 'layout.html' %}
+
+{% block styles %}
+<style>
+  .golden {
+    color: goldenrod;
+  }
+  .card-img-top {
+    height: 11rem;
+  }
+  .b-1 {
+    border: 2px solid goldenrod;
+    border-radius: 0.8rem;
+    padding: 0.5rem;
+  }
+</style>
+{% endblock %}
+
+{% macro lugar(img, nombre, texto) %}
+  <div class="col-3">
+    <form class="card" action="/gold/process_money" method="post">
+      <input type="hidden" name="lugar" value="{{nombre}}">
+      <img src="{{img}}" class="card-img-top">
+      <div class="card-body">
+        <h5 class="card-title">{{nombre}}</h5>
+        <p class="card-text">{{texto}}</p>
+        <button type="submit" class="btn btn-primary">Jugar</button>
+      </div>
+    </form>
+  </div>
+{% endmacro %}
+
+{% block main %}
+  <h3 class="text-center">Usted tiene <span class="golden">{{ coins }}</span> monedas de oro</h3 class="text-center">
+  <a href="/gold/reset" class="btn btn-warning float-right d-inline-block">Resetear</a>
+  <div class="row mb-5">
+    {{ lugar(
+      'https://image.shutterstock.com/image-vector/farm-animals-landscape-cow-pig-260nw-782240887.jpg', 'Granja',
+      'Gana entre 10 y 20 monedas de oro'
+    ) }}
+    {{ lugar(
+      'http://2.bp.blogspot.com/_mm8kBSFWLzo/TKm8JoumP5I/AAAAAAAAAXQ/3MZIdh8ISKA/s640/mito+de+la+caverna.jpg',
+      'Caverna',
+      'Gana entre 5 y 10 monedas de oro'
+    ) }}
+    {{ lugar(
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbVB1De3Nu42i4R-_e6NUgYXd2UiadmlcFXQ&usqp=CAU',
+      'Casa',
+      'Gana entre 2 y 5 monedas de oro'
+    ) }}
+    {{ lugar(
+      'https://static.vecteezy.com/system/resources/thumbnails/002/392/037/small/casino-online-gambling-game-with-creative-playing-cards-roulette-wheel-and-casino-chips-free-vector.jpg',
+      'Casino',
+      'Gana o pierde entre 0 y 50 monedas de oro'
+    ) }}
+  </div>
+  <div class="row">
+    <div class="col-8 offset-2 b-1">
+      <h5>Actividades</h5>
+      {% for activity in activities %}
+        <p class="{{ activity.class }}">{{ activity.text }}</p>
+      {% else %}
+        <p>Usted no ha jugado aún</p>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
