@@ -3,6 +3,28 @@ const { get_user, create_user } = require('./db.js')
 
 const router = express.Router()
 
+// Rutas internas
+function protected_routes (req, res, next) {
+  if (!req.session.user) {
+    req.flash('errors', 'Debe ingresar al sistema primero')
+    return res.redirect('/login')
+  }
+  next()
+}
+
+router.get('/admin', protected_routes, (req, res) => {
+  const user = req.session.user
+
+  res.render('admin.html', { user })
+});
+
+router.get('/', protected_routes, (req, res) => {
+  const user = req.session.user
+
+  res.render('evidencias.html', { user })
+});
+
+// Rutas de Auth (externas)
 router.get('/login', (req, res) => {
   const errors = req.flash('errors')
   res.render('login.html', { errors })
@@ -16,16 +38,18 @@ router.post('/login', async (req, res) => {
   // 2. Validar que usuario sí existe
   const user = await get_user(email)
   if (!user) {
-    req.flash('errors', 'Usuario ya existe o contraseña incorrecta')
+    req.flash('errors', 'Usuario no existe o contraseña incorrecta')
     return res.redirect('/login')
   }
 
   // 3. Validar que contraseña coincida con lo de la base de datos
   if (user.password != password) {
-    req.flash('errors', 'Usuario ya existe o contraseña incorrecta')
+    req.flash('errors', 'Usuario no existe o contraseña incorrecta')
     return res.redirect('/login')
   }
 
+  // 4. Guardamos el usuario en sesión
+  req.session.user = user
   res.redirect('/')
 });
 
@@ -55,16 +79,19 @@ router.post('/register', async (req, res) => {
   }
 
   await create_user(email, name, password)
+
+  // 4. Guardo el nuevo usuario en sesión
+  req.session.user = { name, email, password }
   res.redirect('/')
 });
 
-router.get('/admin', (req, res) => {
-  res.render('admin.html')
-});
+router.get('/logout', (req, res) => {
+  // 1. Eliminamos al usuario de la sesión
+  req.session.user = undefined
+  // 2. Lo mandamos al formulario de login
+  res.redirect('/login')
+})
 
-router.get('/', (req, res) => {
-  res.render('evidencias.html')
-});
 
 
 module.exports = router

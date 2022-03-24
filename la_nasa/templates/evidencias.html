@@ -1,8 +1,11 @@
 {% extends 'layout.html' %}
+{% from 'macros.html' import navbar %}
 
 {% block main %}
+  {{ navbar('/') }}
+
   <h1>&#128125;</h1>
-  <h1>Bienvenido {{nombre}}</h1>
+  <h1>Bienvenid@ {{user.name}}:</h1>
   <h2>Carga una foto de un extraterrestre</h2>
 
   <form action="/upload" method="POST" enctype="multipart/form-data" class="mt-4">
@@ -17,7 +20,6 @@
     background: black;
     color: white;
     text-align: center;
-    padding: 50px;
   }
 
   td,
