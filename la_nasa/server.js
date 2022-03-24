@@ -3,12 +3,15 @@ const express = require('express')
 const fileupload = require('express-fileupload')
 const session = require('express-session')
 const nunjucks = require('nunjucks')
+const flash = require('connect-flash')
 
 const app = express()
 
 // 2. Configura dichas librerías
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+
+app.use(flash())
 
 nunjucks.configure('templates',{
   express:app,
