@@ -12,27 +12,6 @@ const pool = new Pool({
   connectionTimeoutMillis: 2000
 })
 
-async function add_candidato (nombre, foto, color) {
-  const client = await pool.connect()
-
-  const { rows } = await client.query({
-    text: `insert into candidatos (nombre, foto, color) values ($1, $2, $3)`,
-    values: [nombre, foto, color]
-  })
-
-  return rows
-}
-
-async function update_candidato (id, nombre, foto) {
-  const client = await pool.connect()
-
-  const { rows } = await client.query({
-    text: `update candidatos set nombre=$2, foto=$3 where id=$1`,
-    values: [id, nombre, foto]
-  })
-
-  return rows
-}
 /* Obtengo un usuario por su email, o undefined si este no existe en la tabla "users" */
 async function get_user(email) {
   const client = await pool.connect()

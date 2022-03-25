@@ -34,7 +34,8 @@ app.use(fileupload({
 }))
 
 // 3. Importa las rutas
-app.use(require('./routes.js'))
+app.use(require('./routes/auth.js'))
+app.use(require('./routes/routes.js'))
 
 // 4. Inicia el Servidor
 const PORT = 3000

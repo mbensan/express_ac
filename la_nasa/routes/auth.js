@@ -1,28 +1,9 @@
 const express = require('express')
-const { get_user, create_user } = require('./db.js')
+const bcrypt = require('bcrypt')
+const { get_user, create_user } = require('../db.js')
 
 const router = express.Router()
 
-// Rutas internas
-function protected_routes (req, res, next) {
-  if (!req.session.user) {
-    req.flash('errors', 'Debe ingresar al sistema primero')
-    return res.redirect('/login')
-  }
-  next()
-}
-
-router.get('/admin', protected_routes, (req, res) => {
-  const user = req.session.user
-
-  res.render('admin.html', { user })
-});
-
-router.get('/', protected_routes, (req, res) => {
-  const user = req.session.user
-
-  res.render('evidencias.html', { user })
-});
 
 // Rutas de Auth (externas)
 router.get('/login', (req, res) => {
@@ -43,7 +24,8 @@ router.post('/login', async (req, res) => {
   }
 
   // 3. Validar que contraseña coincida con lo de la base de datos
-  if (user.password != password) {
+  const son_iguales = await bcrypt.compare(password, user.password)
+  if ( !son_iguales ) {
     req.flash('errors', 'Usuario no existe o contraseña incorrecta')
     return res.redirect('/login')
   }
@@ -78,7 +60,9 @@ router.post('/register', async (req, res) => {
     return res.redirect('/register')
   }
 
-  await create_user(email, name, password)
+  const password_encrypt = await bcrypt.hash(password, 10)
+  console.log(password_encrypt);
+  await create_user(email, name, password_encrypt)
 
   // 4. Guardo el nuevo usuario en sesión
   req.session.user = { name, email, password }
