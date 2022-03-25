@@ -10,7 +10,7 @@
 
   <form action="/upload" method="POST" enctype="multipart/form-data" class="mt-4">
     <input id="foto" type="file" name="foto"  />
-    <input class="btn bg-light" type="submit" value="¡Subir imagen!" />
+    <input class="btn bg-light" type="submit" value="¡Subir imagen!" {% if not user.auth %}disabled{% endif %} />
   </form>
 {% endblock %}
 

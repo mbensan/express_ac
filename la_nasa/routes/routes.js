@@ -1,4 +1,5 @@
 const express = require('express')
+const { get_users, set_auth } = require('../db.js')
 
 const router = express.Router()
 
@@ -11,10 +12,12 @@ function protected_routes (req, res, next) {
   next()
 }
 
-router.get('/admin', protected_routes, (req, res) => {
+router.get('/admin', protected_routes, async (req, res) => {
   const user = req.session.user
+  // me traigo a lista de todos los usuarios
+  const users = await get_users()
 
-  res.render('admin.html', { user })
+  res.render('admin.html', { user, users })
 });
 
 router.get('/', protected_routes, (req, res) => {
@@ -22,5 +25,14 @@ router.get('/', protected_routes, (req, res) => {
 
   res.render('evidencias.html', { user })
 });
+
+router.put('/users/:id', async (req, res) => {
+  console.log(req.params);
+  console.log(req.body);
+
+  await set_auth(req.params.id, req.body.new_auth)
+
+  res.json({todo: 'ok'})
+})
 
 module.exports = router
